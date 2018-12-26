@@ -1,0 +1,37 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: rcj-react
+spec:
+  replicas: 1
+  template: 
+    metadata:
+      labels:
+        app: rcj-react
+    spec:
+      containers:
+      - name: rcj-react
+        imagePullPolicy: Always
+        image: gcr.io/rcj-containers/rcj-react:master
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+        ports:
+          - containerPort: 80
+            name: service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rcj-react
+  labels:
+    name: rcj-react
+spec:
+  clusterIP: None
+  ports:
+    - name: service
+      port: 8080
+      targetPort: service
+  selector:
+    app: rcj-react

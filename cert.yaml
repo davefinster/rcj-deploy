@@ -1,0 +1,17 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: rcj-certificate-acme
+spec:
+  secretName: rcj-secret
+  dnsNames:
+  - <dnsName>
+  acme:
+    config:
+    - ingressClass: nginx
+      domains:
+      - <dnsName>
+      http01: {}
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer

@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: rcj-ingress
+spec:
+  tls:
+    - hosts:
+      - <dnsName>
+      secretName: rcj-secret
+  rules:
+    - host: <dnsName>
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: rcj-react
+            servicePort: service
+        - path: /Robocup
+          backend:
+            serviceName: rcj-go
+            servicePort: service
