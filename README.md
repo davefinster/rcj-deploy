@@ -1,4 +1,4 @@
-[Deploying RCJ on Kube]
+# Deploying RCJ to Kube
 
 - Ensure that ```kubectl get nodes``` or a similarly basic command works
 - Install Helm/Tiller. Helm is the client side component while Tiller is the server-side
