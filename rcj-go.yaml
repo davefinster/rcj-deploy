@@ -25,6 +25,18 @@ spec:
       - name: rcj-go
         imagePullPolicy: Always
         image: gcr.io/rcj-containers/rcj-go:master
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
         resources:
           requests:
             memory: "64Mi"
@@ -55,7 +67,7 @@ metadata:
   labels:
     name: rcj-go
 spec:
-  clusterIP: None
+  type: NodePort
   ports:
     - name: service
       port: 8080

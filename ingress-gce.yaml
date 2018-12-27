@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: rcj-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: rcj-ip
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    certmanager.k8s.io/acme-http01-edit-in-place: "true"
+spec:
+  rules:
+    - host: rcj.test.cloud.dmf.zone
+      http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: rcj-react
+              servicePort: service
+          - path: /Robocup/*
+            backend:
+              serviceName: rcj-go
+              servicePort: service
+  tls:
+  - secretName: rcj-secret
+    hosts:
+    - rcj.test.cloud.dmf.zone

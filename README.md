@@ -18,10 +18,6 @@ helm install --name cert-manager --namespace kube-system stable/cert-manager --s
 helm upgrade --install --namespace kube-system cert-manager stable/cert-manager --set createCustomResource=true
 ```
 - Create a Cert Issuer tied to Lets Encrypt with ```kubectl apply -f cert-issuer.yaml```
-- Provision an nginx based ingress with ```kubectl apply -f ingress-nginx.yaml```
-- Using ```kubectl get --namespace=ingress-nginx services```, obtain the external IP of the load balancer
-- Update the DNS entry you want to use for RCJ to point to this IP address. You can check propogation using https://www.whatsmydns.net/
-- Generate the SSL certificate using ```kubectl apply -f cert.yaml```
 - In order to use Google Sheets, we need some credentials for the app to use. Visit https://developers.google.com/sheets/api/quickstart/go and use the Enable button. Follow the steps and download the credentials.json file.
 - Install the credentials into the cluster ```kubectl create secret generic google-sheets-credential --from-file=credential.json```
 - Deploy the database ```kubectl apply -f cockroach-single.yaml```
@@ -37,6 +33,24 @@ curl -O https://raw.githubusercontent.com/davefinster/rcj-go/master/tables.sql
 ```
 - Deploy the backend with ```kubectl apply -f rcj-go.yaml```
 - Deploy the frontend with ```kubectl apply -f rcj-react.yaml```
+
+## Provider Specific Deployments
+
+Due to the way ingresses are handled, there are some specifics around 
+
+### Deploying to GKE
+- Reserve a static IP address via the gcloud tool using ```gcloud compute addresses create rcj-ip --global```
+- Fetch the IP address using ```gcloud compute addresses list``` and update the DNS entry you want to use. You can check propogation using https://www.whatsmydns.net/
+- Create the ingress with ```kubectl apply -f ingress-gce.yaml```
+
+
+
+
+### Deploying to DigitalOcean Kube
+- Provision an nginx based ingress with ```kubectl apply -f ingress-nginx.yaml```
+- Using ```kubectl get --namespace=ingress-nginx services```, obtain the external IP of the load balancer
+- Update the DNS entry you want to use for RCJ to point to this IP address. You can check propogation using https://www.whatsmydns.net/
+- Generate the SSL certificate using ```kubectl apply -f cert.yaml```
 - Deploy the ingress entry ```kubectl apply -f ingress.yaml```
 
 

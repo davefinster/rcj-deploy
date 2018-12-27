@@ -28,7 +28,7 @@ metadata:
   labels:
     name: rcj-react
 spec:
-  clusterIP: None
+  type: NodePort
   ports:
     - name: service
       port: 8080
