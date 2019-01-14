@@ -1,0 +1,17 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: test-certificate-acme
+spec:
+  secretName: test-secret
+  dnsNames:
+  - ambass.test.dmf.zone
+  acme:
+    config:
+      - dns01:
+          provider: prod-clouddns
+        domains:
+          - ambass.test.dmf.zone
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer

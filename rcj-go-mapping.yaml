@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rcj-go-mapping
+  annotations:
+    getambassador.io/config: |
+      ---
+      precedence: 3
+      apiVersion: ambassador/v0
+      kind:  Mapping
+      name:  rcj_go_post_mapping
+      prefix: /Robocup
+      service: http://rcj-go:8080
+      rewrite: /Robocup
+      method: POST
+      case_sensitive: false
+      ---
+      precedence: 2
+      apiVersion: ambassador/v0
+      kind:  Mapping
+      name:  rcj_go_mapping
+      prefix: /Robocup
+      service: http://rcj-go:8080
+      rewrite: /Robocup
+      method: GET
+      case_sensitive: false
+spec:
+  type: ClusterIP
+  clusterIP: None
